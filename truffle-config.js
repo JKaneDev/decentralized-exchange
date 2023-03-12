@@ -1,3 +1,5 @@
+require('babel-register');
+require('babel-polyfill');
 require('dotenv').config();
 
 // const HDWalletProvider = require('@truffle/hdwallet-provider');
@@ -18,7 +20,7 @@ module.exports = {
 	},
 	compilers: {
 		solc: {
-			version: '0.8.19',
+			version: '0.7.0',
 			settings: {
 				optimizer: {
 					enabled: true,
