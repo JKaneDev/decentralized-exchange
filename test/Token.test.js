@@ -1,4 +1,5 @@
-import { tokens } from '../src/helpers';
+import { invalid } from 'moment';
+import { tokens, EVM_REVERT } from '../src/helpers';
 
 const Token = artifacts.require('./Token');
 require('chai').use(require('chai-as-promised')).should();
@@ -45,27 +46,76 @@ contract('Token', ([deployer, sender, receiver]) => {
 		let amount;
 		let result;
 
-		beforeEach(async () => {
-			amount = tokens(100);
-			result = await token.transfer(receiver, amount, { from: deployer });
-		});
-		it('transfers token balances', async () => {
-			let balanceOf;
-			// Transfer
-			await token.transfer(receiver, tokens(100), {
-				from: deployer,
+		describe('success', async () => {
+			beforeEach(async () => {
+				amount = tokens(100);
+				result = await token.transfer(receiver, amount, { from: deployer });
 			});
-			// After Transfer
-			balanceOf = await token.balanceOf(deployer);
-			balanceOf.toString().should.equal(tokens(999900).toString());
-			console.log('receiver balance after transfer: ', balanceOf.toString());
-			balanceOf = await token.balanceOf(receiver);
-			balanceOf.toString().should.equal(tokens(100).toString());
-			console.log('deployer balance after transfer: ', balanceOf.toString());
+			it('transfers token balances', async () => {
+				let balanceOf;
+				// Transfer
+				await token.transfer(receiver, tokens(100), {
+					from: deployer,
+				});
+				// After Transfer
+				balanceOf = await token.balanceOf(deployer);
+				balanceOf.toString().should.equal(tokens(999800).toString());
+				balanceOf = await token.balanceOf(receiver);
+				balanceOf.toString().should.equal(tokens(200).toString());
+			});
+
+			it('emits a transfer event', async () => {
+				const log = result.logs[0];
+				log.event.should.eq('Transfer');
+				const event = log.args;
+				event.from.toString().should.equal(deployer, 'from is correct');
+				event.to.should.equal(receiver, 'to is correct');
+				event.value
+					.toString()
+					.should.equal(amount.toString(), 'value is correct');
+			});
 		});
 
-		it('emits a transfer event', async () => {
-			console.log(result);
+		describe('failure', async () => {
+			it('rejects insufficient balances', async () => {
+				let invalidAmount;
+				invalidAmount = tokens(100000000); // 100 million - greater than totalSupply
+				await token
+					.transfer(receiver, invalidAmount, { from: deployer })
+					.should.be.rejectedWith(EVM_REVERT);
+
+				// Attempt transfer tokens when you have none
+				invalidAmount = tokens(10); // recipient has no tokens
+				await token
+					.transfer(deployer, invalidAmount, { from: receiver })
+					.should.be.rejectedWith(EVM_REVERT);
+			});
+
+			it('rejects invalid recipients', async () => {
+				await token.transfer(0x0, amount, { from: deployer }).should.be
+					.rejected;
+			});
+		});
+	});
+
+	describe('approving tokens', () => {
+		let result;
+		let amount;
+
+		describe('success', async () => {
+			beforeEach(async () => {
+				amount = tokens(100);
+				result = await token.transfer(receiver, amount, { from: deployer });
+			});
+			it('', async () => {});
+
+			it('', async () => {});
+		});
+
+		describe('failure', async () => {
+			it('', async () => {});
+
+			it('', async () => {});
 		});
 	});
 });
