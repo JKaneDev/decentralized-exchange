@@ -68,6 +68,10 @@ contract('Exchange', ([deployer, feeAccount, user1]) => {
 			});
 		});
 
-		describe('failure', () => {});
+		describe('failure', () => {
+			it('rejects ETH deposits', async () => {
+				// TODO: Fill me in...
+			});
+		});
 	});
 });
