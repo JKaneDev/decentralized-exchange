@@ -36,7 +36,7 @@ contract Exchange {
     }
 
     function depositToken(address _token, uint256 _amount) public {
-        // TODO: Don't allow ETH deposits
+        require(_token != ETH);
         require(Token(_token).transferFrom(msg.sender, address(this), _amount));
         tokens[_token][msg.sender] += _amount; 
         emit Deposit(_token, msg.sender, _amount, tokens[_token][msg.sender]);

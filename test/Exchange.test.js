@@ -1,4 +1,5 @@
-import { tokens, EVM_REVERT } from '../src/helpers';
+import Web3 from 'web3';
+import { tokens, EVM_REVERT, ETH_ADDRESS, ether } from '../src/helpers';
 
 const Token = artifacts.require('./Token');
 const Exchange = artifacts.require('./Exchange');
@@ -31,6 +32,40 @@ contract('Exchange', ([deployer, feeAccount, user1]) => {
 		});
 	});
 
+	describe('depositing ETH', async () => {
+		let result;
+		let amount;
+
+		beforeEach(async () => {
+			amount = ether(1);
+			result = await exchange.depositEther({
+				from: user1,
+				value: amount,
+			});
+		});
+
+		it('tracks the ETH deposit', async () => {
+			const balance = await exchange.tokens(ETH_ADDRESS, user1);
+			balance.toString().should.equal(amount.toString());
+		});
+
+		it('emits a deposit event', async () => {
+			const log = result.logs[0];
+			log.event.should.eq('Deposit');
+			const event = log.args;
+			event.token
+				.toString()
+				.should.equal(ETH_ADDRESS, 'token address is correct');
+			event.user.should.equal(user1, 'user address is correct');
+			event.amount
+				.toString()
+				.should.equal(amount.toString(), 'amount is correct');
+			event.balance
+				.toString()
+				.should.equal(amount.toString(), 'balance is correct');
+		});
+	});
+
 	describe('depositing tokens', () => {
 		let result;
 		let amount;
@@ -51,7 +86,7 @@ contract('Exchange', ([deployer, feeAccount, user1]) => {
 				balance.toString().should.equal(amount.toString());
 			});
 
-			it('emits a deposit event', async () => {
+			it('emits a Deposit event', async () => {
 				const log = result.logs[0];
 				log.event.should.eq('Deposit');
 				const event = log.args;
@@ -61,16 +96,24 @@ contract('Exchange', ([deployer, feeAccount, user1]) => {
 				event.user.should.equal(user1, 'user address is correct');
 				event.amount
 					.toString()
-					.should.equal(tokens(10).toString(), 'amount is correct');
+					.should.equal(amount.toString(), 'amount is correct');
 				event.balance
 					.toString()
-					.should.equal(tokens(10).toString(), 'balance is correct');
+					.should.equal(amount.toString(), 'balance is correct');
 			});
 		});
 
 		describe('failure', () => {
 			it('rejects ETH deposits', async () => {
-				// TODO: Fill me in...
+				await exchange
+					.depositToken(ETH_ADDRESS, tokens(10), { from: user1 })
+					.should.be.rejectedWith(EVM_REVERT);
+			});
+
+			it('fails when no tokens are approved', async () => {
+				await exchange
+					.depositToken(token.address, tokens(10), { from: user1 })
+					.should.be.rejectedWith(EVM_REVERT);
 			});
 		});
 	});
