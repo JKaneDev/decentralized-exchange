@@ -10,8 +10,8 @@ import './Token.sol';
 // [X] Deposit Tokens
 // [X] Withdraw Tokens
 // [X] Check Balances
-// [ ] Make Order
-// [ ] Cancel Order
+// [X] Make Order
+// [X] Cancel Order
 // [ ] Fill Order
 // [ ] Charge Fees
 
@@ -24,11 +24,13 @@ contract Exchange {
     mapping(address => mapping(address => uint256)) public balances; // token => user address => amount held by user
     mapping(uint256 => _Order) public orders;
     uint256 public orderCount;
+    mapping(uint256 => bool) public orderCancelled;
     
     // Events
     event Deposit(address token, address user, uint256 amount, uint256 balance);
     event Withdraw(address token, address user, uint256 amount, uint256 balance);
     event Order(uint256 id, address user, address tokenReceived, uint256 amountReceived, address tokenGiven, uint256 amountGiven, uint256 timestamp);
+    event Cancel(uint256 id, address user, address tokenReceived, uint256 amountReceived, address tokenGiven, uint256 amountGiven, uint256 timestamp);
 
     struct _Order {
         uint256 id;
@@ -91,7 +93,11 @@ contract Exchange {
     }
 
     function cancelOrder(uint256 _id) public {
-        
+        _Order storage _order = orders[_id];
+        require(address(_order.user) == msg.sender);
+        require(_order.id == _id);
+        orderCancelled[_id] = true;
+        emit Cancel(_order.id, msg.sender, _order.tokenReceived, _order.amountReceived, _order.tokenGiven, _order.amountGiven, block.timestamp);
     }
 }
 
