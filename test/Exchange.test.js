@@ -237,4 +237,62 @@ contract('Exchange', ([deployer, feeAccount, user1]) => {
 			result.toString().should.equal(ether(1).toString());
 		});
 	});
+
+	describe('making orders', async () => {
+		let result;
+
+		beforeEach(async () => {
+			result = await exchange.makeOrder(
+				token.address,
+				tokens(1),
+				ETH_ADDRESS,
+				ether(1),
+				{ from: user1 }
+			);
+		});
+
+		it('tracks the newly created order', async () => {
+			const orderCount = await exchange.orderCount();
+			orderCount.toString().should.eq('1');
+			const order = await exchange.orders('1');
+			order.id.toString().should.equal('1', 'id is correct');
+			order.user.should.equal(user1, 'user is correct');
+			order.tokenReceived.should.equal(
+				token.address,
+				'tokenReceived is correct'
+			);
+			order.amountReceived
+				.toString()
+				.should.equal(tokens(1).toString(), 'amountReceived is correct');
+			order.tokenGiven.should.equal(ETH_ADDRESS, 'tokenGiven is correct');
+			order.amountGiven
+				.toString()
+				.should.equal(ether(1).toString(), 'amountGiven is correct');
+			order.timestamp
+				.toString()
+				.length.should.be.at.least(1, 'timestamp is present');
+		});
+
+		it('emits an "Order" event', async () => {
+			const log = result.logs[0];
+			log.event.should.eq('Order');
+			const event = log.args;
+			event.id.toString().should.equal('1', 'id is correct');
+			event.user.should.equal(user1, 'user is correct');
+			event.tokenReceived.should.equal(
+				token.address,
+				'tokenReceived is correct'
+			);
+			event.amountReceived
+				.toString()
+				.should.equal(tokens(1).toString(), 'amountReceived is correct');
+			event.tokenGiven.should.equal(ETH_ADDRESS, 'tokenGiven is correct');
+			event.amountGiven
+				.toString()
+				.should.equal(ether(1).toString(), 'amountGiven is correct');
+			event.timestamp
+				.toString()
+				.length.should.be.at.least(1, 'timestamp is present');
+		});
+	});
 });

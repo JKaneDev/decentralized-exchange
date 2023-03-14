@@ -6,13 +6,14 @@ import './Token.sol';
 // TODO:
 // [X] Set The Fee Account
 // [X] Deposit Ether
-// [ ] Withdraw Ether
+// [X] Withdraw Ether
 // [X] Deposit Tokens
-// [ ] Withdraw Tokens
-// [ ] Check Balances
+// [X] Withdraw Tokens
+// [X] Check Balances
 // [ ] Make Order
 // [ ] Cancel Order
 // [ ] Fill Order
+// [ ] Charge Fees
 
 contract Exchange {
 
@@ -21,10 +22,26 @@ contract Exchange {
     uint256 public feePercent;
     address constant ETH = address(0); // Store ETH in tokens mapping with blank address
     mapping(address => mapping(address => uint256)) public balances; // token => user address => amount held by user
+    mapping(uint256 => _Order) public orders;
+    uint256 public orderCount;
     
     // Events
     event Deposit(address token, address user, uint256 amount, uint256 balance);
     event Withdraw(address token, address user, uint256 amount, uint256 balance);
+    event Order(uint256 id, address user, address tokenReceived, uint256 amountReceived, address tokenGiven, uint256 amountGiven, uint256 timestamp);
+
+    struct _Order {
+        uint256 id;
+        address user;
+        address tokenReceived;
+        uint256 amountReceived;
+        address tokenGiven;
+        uint256 amountGiven;
+        uint256 timestamp;
+    }
+
+    // Store the order
+    // Add the order to storage
 
     constructor (address _feeAccount, uint256 _feePercent) {
         feeAccount = _feeAccount;
@@ -65,6 +82,16 @@ contract Exchange {
 
     function balanceOf(address _token, address _user) public view returns (uint256) {
         return balances[_token][_user];
+    }
+
+    function makeOrder(address _tokenReceived, uint256 _amountReceived, address _tokenGiven, uint256 _amountGiven) public {
+        orderCount = orderCount += 1;
+        orders[orderCount] = _Order(orderCount, msg.sender, _tokenReceived, _amountReceived, _tokenGiven, _amountGiven, block.timestamp);
+        emit Order(orderCount, msg.sender, _tokenReceived, _amountReceived, _tokenGiven, _amountGiven, block.timestamp);
+    }
+
+    function cancelOrder(uint256 _id) public {
+        
     }
 }
 
