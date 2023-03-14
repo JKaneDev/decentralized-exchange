@@ -5,9 +5,9 @@ import './Token.sol';
 
 // TODO:
 // [X] Set The Fee Account
-// [ ] Deposit Ether
+// [X] Deposit Ether
 // [ ] Withdraw Ether
-// [ ] Deposit Tokens
+// [X] Deposit Tokens
 // [ ] Withdraw Tokens
 // [ ] Check Balances
 // [ ] Make Order
