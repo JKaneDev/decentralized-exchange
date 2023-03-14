@@ -1,4 +1,3 @@
-import { invalid } from 'moment';
 import { tokens, EVM_REVERT } from '../src/helpers';
 
 const Token = artifacts.require('./Token');

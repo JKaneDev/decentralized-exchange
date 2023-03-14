@@ -1,10 +1,7 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.7.0;
-
-import 'openzeppelin-solidity/contracts/math/SafeMath.sol';
+pragma solidity ^0.8.19;
 
 contract Token {
-    using SafeMath for uint;
 
     // Variables
     string public name = "X Token";
@@ -35,8 +32,8 @@ contract Token {
 
     function _transfer(address _from, address _to, uint256 _value) internal {
         require(_to != address(0));
-        balanceOf[_from] = balanceOf[_from].sub(_value);
-        balanceOf[_to] = balanceOf[_to].add(_value);
+        balanceOf[_from] -= _value;
+        balanceOf[_to] += _value;
         emit Transfer(_from, _to, _value);
     }
 
@@ -50,7 +47,7 @@ contract Token {
     function transferFrom(address _from, address _to, uint256 _value) public returns (bool success) {
         require(_value <= balanceOf[_from]);
         require(_value <= allowance[_from][msg.sender]);
-        allowance[_from][msg.sender] = allowance[_from][msg.sender].sub(_value);
+        allowance[_from][msg.sender] = allowance[_from][msg.sender] - _value;
         _transfer(_from, _to, _value);
         return true;
     }
