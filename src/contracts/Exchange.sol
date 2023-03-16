@@ -3,18 +3,6 @@ pragma solidity ^0.8.19;
 
 import './Token.sol';
 
-// TODO:
-// [X] Set The Fee Account
-// [X] Deposit Ether
-// [X] Withdraw Ether
-// [X] Deposit Tokens
-// [X] Withdraw Tokens
-// [X] Check Balances
-// [X] Make Order
-// [X] Cancel Order
-// [X] Fill Order
-// [X] Charge Fees
-
 contract Exchange {
 
     // Variables
