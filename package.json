@@ -9,12 +9,13 @@
 		"node": "16.15.1"
 	},
 	"dependencies": {
+		"@babel/cli": "^7.21.0",
+		"@babel/core": "^7.21.3",
+		"@babel/preset-env": "^7.20.2",
+		"@reduxjs/toolkit": "^1.9.3",
 		"@truffle/hdwallet-provider": "^2.1.8",
 		"apexcharts": "3.37.1",
 		"babel-loader": "^9.1.2",
-		"@babel/core": "^7.21.3",
-		"@babel/preset-env": "^7.20.2",
-		"@babel/cli": "^7.21.0",
 		"babel-register": "6.26.0",
 		"bootstrap": "^5.2.3",
 		"chai": "^4.3.7",

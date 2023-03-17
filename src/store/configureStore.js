@@ -1,4 +1,5 @@
-import { createStore, applyMiddleware, compose } from 'react-redux';
+import { applyMiddleware, compose } from 'redux';
+import { configureStore } from '@reduxjs/toolkit';
 import { createLogger } from 'redux-logger';
 import rootReducer from './reducers';
 
@@ -8,10 +9,12 @@ const middleware = [];
 // For Redux DevTools
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
-export default function configureStore() {
-	return createStore(
-		rootReducer,
-		preloadedState,
-		composeEnhancers(applyMiddleware(...middleware, loggerMiddleware))
-	);
+export default function createStore(preloadedState) {
+	return configureStore({
+		reducer: rootReducer,
+		preloadedState: preloadedState,
+		enhancer: composeEnhancers(
+			applyMiddleware(...middleware, loggerMiddleware)
+		),
+	});
 }
