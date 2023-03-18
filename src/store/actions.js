@@ -4,3 +4,24 @@ export function web3Loaded(connection) {
 		connection,
 	};
 }
+
+export function web3AccountLoaded(account) {
+	return {
+		type: 'WEB_ACCOUNT_LOADED',
+		account,
+	};
+}
+
+export function tokenLoaded(contract) {
+	return {
+		type: 'TOKEN_LOADED',
+		contract,
+	};
+}
+
+export function exchangeLoaded(contract) {
+	return {
+		type: 'EXCHANGE_LOADED',
+		contract,
+	};
+}
