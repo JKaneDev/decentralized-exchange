@@ -30,6 +30,11 @@
 	gap: 0.5rem;
 }
 
+.nav-item a.nav-link {
+	margin-left: auto;
+	justify-self: flex-end;
+}
+
 .content > div:first-child {
 	min-width: 220px;
 }
