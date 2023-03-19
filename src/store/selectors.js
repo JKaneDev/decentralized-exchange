@@ -6,10 +6,16 @@ const account = (state) => {
 };
 export const accountSelector = createSelector(account, (a) => a);
 
-const tokenLoaded = (state) => (state.token ? true : false);
+const token = (state) => state.token.contract;
+export const tokenSelector = createSelector(token, (t) => t);
+
+const tokenLoaded = (state) => get(state, 'token.loaded');
 export const tokenLoadedSelector = createSelector(tokenLoaded, (tl) => tl);
 
-const exchangeLoaded = (state) => (state.exchange ? true : false);
+const exchange = (state) => state.exchange.contract;
+export const exchangeSelector = createSelector(exchange, (e) => e);
+
+const exchangeLoaded = (state) => get(state, 'exchange.loaded', false);
 export const exchangeLoadedSelector = createSelector(
 	exchangeLoaded,
 	(el) => el

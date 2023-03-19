@@ -66,6 +66,7 @@ module.exports = async function (callback) {
 		);
 
 		// User1 cancels order
+		// console.log(result);
 		orderId = result.logs[0].args.id;
 		await exchange.cancelOrder(orderId, { from: user1 });
 		console.log(`Cancelled order from ${user1}`);

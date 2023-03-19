@@ -22,6 +22,8 @@ function App(props) {
 		const networkId = await web3.eth.net.getId();
 		await loadAccount(web3, dispatch);
 		const token = await loadToken(web3, networkId, dispatch);
+		const exchange = await loadExchange(web3, networkId, dispatch);
+
 		if (!token) {
 			window.alert(
 				'Token smart contract not detected on the current network. Please select another network with Metamask'
@@ -33,7 +35,6 @@ function App(props) {
 				'Exchange smart contract not detected on the current network. Please select another network with Metamask'
 			);
 		}
-		loadExchange(web3, networkId, dispatch);
 	};
 
 	return (
