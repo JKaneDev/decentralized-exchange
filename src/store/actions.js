@@ -7,7 +7,7 @@ export function web3Loaded(connection) {
 
 export function web3AccountLoaded(account) {
 	return {
-		type: 'WEB_ACCOUNT_LOADED',
+		type: 'WEB3_ACCOUNT_LOADED',
 		account,
 	};
 }
