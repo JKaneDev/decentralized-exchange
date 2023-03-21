@@ -1,4 +1,5 @@
 import { connect } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import Spinner from './Spinner';
 import { Tabs, Tab } from 'react-bootstrap';
 import {
@@ -6,7 +7,10 @@ import {
 	myFilledOrdersSelector,
 	myOpenOrdersLoadedSelector,
 	myOpenOrdersSelector,
+	exchangeSelector,
+	accountSelector,
 } from '../store/selectors';
+import { cancelOrder } from '../store/interactions';
 
 const renderMyFilledOrders = (myFilledOrders) => {
 	return (
@@ -27,7 +31,7 @@ const renderMyFilledOrders = (myFilledOrders) => {
 	);
 };
 
-const renderMyOpenOrders = (myOpenOrders) => {
+const renderMyOpenOrders = (myOpenOrders, dispatch, exchange, account) => {
 	return (
 		<tbody>
 			{myOpenOrders.map((order) => {
@@ -35,7 +39,15 @@ const renderMyOpenOrders = (myOpenOrders) => {
 					<tr key={order.id}>
 						<td className={`text-${order.orderTypeClass}`}>{order.tokenAmount}</td>
 						<td className={`text-${order.orderTypeClass}`}>{order.tokenPrice}</td>
-						<td className='text-muted'>x</td>
+						<td
+							className='text-muted cancel-order'
+							onClick={(e) => {
+								console.log('CANCELLING ORDER');
+								cancelOrder(dispatch, exchange, order, account);
+							}}
+						>
+							X
+						</td>
 					</tr>
 				);
 			})}
@@ -43,7 +55,9 @@ const renderMyOpenOrders = (myOpenOrders) => {
 	);
 };
 
-const MyTransactions = ({ myFilledOrders, showMyFilledOrders, myOpenOrders, showMyOpenOrders }) => {
+const MyTransactions = ({ myFilledOrders, showMyFilledOrders, myOpenOrders, showMyOpenOrders, exchange, account }) => {
+	const dispatch = useDispatch();
+
 	return (
 		<div className='vertical'>
 			<div className='card bg-dark text-white'>
@@ -71,7 +85,11 @@ const MyTransactions = ({ myFilledOrders, showMyFilledOrders, myOpenOrders, show
 										<th>Cancel</th>
 									</tr>
 								</thead>
-								{showMyOpenOrders ? renderMyOpenOrders(myOpenOrders) : <Spinner type='table' />}
+								{showMyOpenOrders ? (
+									renderMyOpenOrders(myOpenOrders, dispatch, exchange, account)
+								) : (
+									<Spinner type='table' />
+								)}
 							</table>
 						</Tab>
 					</Tabs>
@@ -87,6 +105,8 @@ function mapStateToProps(state) {
 		showMyFilledOrders: myFilledOrdersLoadedSelector(state),
 		myOpenOrders: myOpenOrdersSelector(state),
 		showMyOpenOrders: myOpenOrdersLoadedSelector(state),
+		exchange: exchangeSelector(state),
+		account: accountSelector(state),
 	};
 }
 
