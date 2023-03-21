@@ -1,7 +1,8 @@
 import moment from 'moment';
-import { get, groupBy, reject } from 'lodash';
+import _, { create, get, groupBy, reject } from 'lodash';
 import { createSelector } from 'reselect';
 import { ETH_ADDRESS, tokens, ether, GREEN, RED } from './helpers';
+import { createConfigItemAsync } from '@babel/core';
 
 const account = (state) => {
 	return get(state, 'web3.account');
@@ -166,5 +167,73 @@ const decorateOrderBookOrder = (order) => {
 		orderType,
 		orderTypeClass: orderType === 'buy' ? GREEN : RED,
 		orderFillClass: orderType === 'buy' ? 'sell' : 'buy',
+	};
+};
+
+export const myFilledOrdersLoadedSelector = createSelector(filledOrdersLoaded, (loaded) => loaded);
+
+export const myFilledOrdersSelector = createSelector(account, filledOrders, (account, orders) => {
+	// Find our orders
+	orders = orders.filter((o) => o.user === account || o.userFill === account);
+	// Sort by date ascending
+	orders = orders.sort((a, b) => a.timestamp - b.timestamp);
+	// Decorate orders - add display attributes
+	orders = decorateMyFilledOrders(orders, account);
+});
+
+const decorateMyFilledOrders = (orders) => {
+	return orders.map((order) => {
+		order = decorateOrder(order);
+		order = decorateMyFilledOrder(order, account);
+		return order;
+	});
+};
+
+const decorateMyFilledOrder = (order, account) => {
+	const myOrder = order.user === account;
+
+	let orderType;
+
+	if (myOrder) {
+		orderType = order.tokenGiven === ETH_ADDRESS ? 'buy' : 'sell';
+	} else {
+		orderType = order.tokenGiven === ETH_ADDRESS ? 'sell' : 'buy';
+	}
+
+	return {
+		...order,
+		orderType,
+		orderTypeClass: orderType === 'buy' ? GREEN : RED,
+		orderSign: orderType === 'buy' ? '+' : '-',
+	};
+};
+
+const myOpenOrdersLoadedSelector = createSelector(orderBookLoaded, (loaded) => loaded);
+
+export const myOpenOrdersSelector = createSelector(account, openOrders, (account, orders) => {
+	// Filter orders created by current account
+	orders = orders.filter((o) => o.user === account);
+	// Decorate orders - add display attributes
+	orders = decorateMyOpenOrders(orders);
+	// Sort orders by date descending
+	orders = orders.sort((a, b) => b.timestamp - a.timestamp);
+	return orders;
+});
+
+const decorateMyOpenOrders = (orders, account) => {
+	return orders.map((order) => {
+		order = decorateOrder(order);
+		order = decorateMyOpenOrder(order, account);
+		return order;
+	});
+};
+
+const decorateMyOpenOrder = (order, account) => {
+	let orderType = order.tokenGiven === ETH_ADDRESS ? 'buy' : 'sell';
+
+	return {
+		...order,
+		orderType,
+		orderTypeClass: orderType === 'buy' ? GREEN : RED,
 	};
 };
