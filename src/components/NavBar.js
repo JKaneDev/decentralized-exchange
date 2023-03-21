@@ -5,7 +5,7 @@ const Navbar = (props) => {
 	return (
 		<nav className='navbar navbar-expand-lg navbar-dark bg-primary'>
 			<a className='navbar-brand' href='#/'>
-				DApp Token Exchange
+				X Token Exchange
 			</a>
 
 			<ul className='navbar-nav ml-auto'>

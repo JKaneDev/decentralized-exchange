@@ -111,6 +111,7 @@ const tokenPriceClass = (tokenPrice, orderId, previousOrder) => {
 };
 
 const orderBookLoaded = (state) => cancelledOrdersLoaded(state) && filledOrdersLoaded(state) && allOrdersLoaded(state);
+export const orderBookLoadedSelector = createSelector(orderBookLoaded, (loaded) => loaded);
 
 const openOrders = (state) => {
 	const all = allOrders(state);

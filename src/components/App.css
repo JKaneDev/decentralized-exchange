@@ -19,19 +19,28 @@
 	padding-right: 8px;
 }
 
+.navbar.navbar-expand-lg {
+	padding-left: 1rem;
+}
+
 #nav-bar {
-	padding-left: 2rem;
+	padding-left: 3rem;
 	display: flex;
 	gap: 1rem;
+}
+
+.navbar-brand {
+	letter-spacing: 0.15rem;
 }
 
 .navbar-nav {
 	display: flex;
 	gap: 0.5rem;
+	margin-left: auto;
+	padding-right: 2rem;
 }
 
 .nav-item a.nav-link {
-	margin-left: auto;
 	justify-self: flex-end;
 }
 
