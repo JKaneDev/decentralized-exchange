@@ -1,5 +1,5 @@
 import moment from 'moment';
-import { get } from 'lodash';
+import { get, groupBy, reject } from 'lodash';
 import { createSelector } from 'reselect';
 import { ETH_ADDRESS, tokens, ether, GREEN, RED } from './helpers';
 
@@ -129,5 +129,41 @@ const openOrders = (state) => {
 // CREATE THE ORDER BOOK
 export const orderBookSelector = createSelector(openOrders, (orders) => {
 	// Decorate Order Book Orders
+	orders = decorateOrderBookOrders(orders);
+	// Group orders by 'orderType'
+	orders = groupBy(orders, 'orderType');
+	// Fetch buy orders
+	const buyOrders = get(orders, 'buy', []);
+	// Sort buy orders by token price
+	orders = {
+		...orders,
+		buyOrders: buyOrders.sort((a, b) => b.tokenPrice - a.tokenPrice),
+	};
+	// Fetch sell orders
+	const sellOrders = get(orders, 'sell', []);
+	// Sort sell orders by token price
+	orders = {
+		...orders,
+		sellOrders: sellOrders.sort((a, b) => b.tokenPrice - a.tokenPrice),
+	};
 	return orders;
 });
+
+const decorateOrderBookOrders = (orders) => {
+	return orders.map((order) => {
+		order = decorateOrder(order);
+		order = decorateOrderBookOrder(order);
+		// Decorate order book order
+		return order;
+	});
+};
+
+const decorateOrderBookOrder = (order) => {
+	const orderType = order.tokenGiven === ETH_ADDRESS ? 'buy' : 'sell';
+	return {
+		...order,
+		orderType,
+		orderTypeClass: orderType === 'buy' ? GREEN : RED,
+		orderFillClass: orderType === 'buy' ? 'sell' : 'buy',
+	};
+};
