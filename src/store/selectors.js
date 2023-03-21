@@ -2,7 +2,6 @@ import moment from 'moment';
 import _, { create, get, groupBy, reject } from 'lodash';
 import { createSelector } from 'reselect';
 import { ETH_ADDRESS, tokens, ether, GREEN, RED } from './helpers';
-import { createConfigItemAsync } from '@babel/core';
 
 const account = (state) => {
 	return get(state, 'web3.account');
@@ -47,7 +46,7 @@ export const filledOrdersSelector = createSelector(filledOrders, (orders) => {
 
 	// Sort orders by date descending for price comparison
 	orders = orders.sort((a, b) => b.timestamp - a.timestamp);
-	console.log('FILLED ORDERS: ', orders);
+
 	return orders;
 });
 
@@ -172,15 +171,6 @@ const decorateOrderBookOrder = (order) => {
 
 export const myFilledOrdersLoadedSelector = createSelector(filledOrdersLoaded, (loaded) => loaded);
 
-export const myFilledOrdersSelector = createSelector(account, filledOrders, (account, orders) => {
-	// Find our orders
-	orders = orders.filter((o) => o.user === account || o.userFill === account);
-	// Sort by date ascending
-	orders = orders.sort((a, b) => a.timestamp - b.timestamp);
-	// Decorate orders - add display attributes
-	orders = decorateMyFilledOrders(orders, account);
-});
-
 const decorateMyFilledOrders = (orders) => {
 	return orders.map((order) => {
 		order = decorateOrder(order);
@@ -208,7 +198,17 @@ const decorateMyFilledOrder = (order, account) => {
 	};
 };
 
-const myOpenOrdersLoadedSelector = createSelector(orderBookLoaded, (loaded) => loaded);
+export const myOpenOrdersLoadedSelector = createSelector(orderBookLoaded, (loaded) => loaded);
+
+export const myFilledOrdersSelector = createSelector(account, filledOrders, (account, orders) => {
+	// Find our orders
+	orders = orders.filter((o) => o.user === account || o.userFill === account);
+	// Sort by date ascending
+	orders = orders.sort((a, b) => a.timestamp - b.timestamp);
+	// Decorate orders - add display attributes
+	orders = decorateMyFilledOrders(orders, account);
+	return orders;
+});
 
 export const myOpenOrdersSelector = createSelector(account, openOrders, (account, orders) => {
 	// Filter orders created by current account
@@ -237,3 +237,18 @@ const decorateMyOpenOrder = (order, account) => {
 		orderTypeClass: orderType === 'buy' ? GREEN : RED,
 	};
 };
+
+export const priceChartLoadedSelector = createSelector(filledOrdersLoaded, (loaded) => loaded);
+
+export const priceChartSelector = createSelector(filledOrders, (orders) => {
+	orders = orders.sort((a, b) => a.timestamp - b.timestamp);
+	orders = orders.map((o) => decorateOrder(orders));
+
+	return {
+		series: [
+			{
+				data: buildGraphData(orders),
+			},
+		],
+	};
+});

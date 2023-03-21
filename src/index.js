@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import App from './components/App';
 import 'bootstrap/dist/css/bootstrap.css';
+import App from './components/App';
 import configureStore from './store/configureStore';
 import { Provider } from 'react-redux';
 
@@ -11,5 +11,5 @@ root.render(
 		<Provider store={configureStore()}>
 			<App />
 		</Provider>
-	</React.StrictMode>
+	</React.StrictMode>,
 );
