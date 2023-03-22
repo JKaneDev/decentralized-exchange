@@ -1,5 +1,5 @@
-import { connect } from 'react-redux';
-import { loadAllOrders } from '../store/interactions';
+import { connect, useDispatch } from 'react-redux';
+import { loadAllOrders, subscribeToEvents } from '../store/interactions';
 import { tokenSelector, exchangeSelector } from '../store/selectors';
 import { useEffect } from 'react';
 import Trades from './Trades';
@@ -8,12 +8,15 @@ import MyTransactions from './MyTransactions';
 import PriceChart from './PriceChart';
 
 const Content = (props) => {
+	const dispatch = useDispatch();
+
 	useEffect(() => {
-		loadBlockchainData(props.dispatch);
+		loadBlockchainData(props);
 	}, []);
 
-	async function loadBlockchainData(dispatch) {
-		await loadAllOrders(props.exchange, dispatch);
+	async function loadBlockchainData({ exchange }) {
+		await loadAllOrders(exchange, dispatch);
+		await subscribeToEvents(exchange, dispatch);
 	}
 
 	return (

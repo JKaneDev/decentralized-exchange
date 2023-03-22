@@ -8,6 +8,7 @@ import {
 	filledOrdersLoaded,
 	allOrdersLoaded,
 	orderCancelling,
+	orderCancelled,
 } from './actions';
 import Token from '../abis/Token.json';
 import Exchange from '../abis/Exchange.json';
@@ -96,4 +97,10 @@ export const cancelOrder = (dispatch, exchange, order, account) => {
 			console.log(error);
 			window.alert('There was an error!');
 		});
+};
+
+export const subscribeToEvents = async (exchange, dispatch) => {
+	exchange.events.Cancel({}, (error, event) => {
+		dispatch(orderCancelled(event.returnValues));
+	});
 };
