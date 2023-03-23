@@ -208,8 +208,8 @@ tr.order-book-order {
 .card-body.my-transactions td,
 .card-body.my-transactions th,
 .card-body.trades td,
-.card-body.trades td,
-.card-body.balance th,
+.card-body.trades th,
+.card-body.balance td,
 .card-body.balance th {
 	padding: 0.5rem;
 }

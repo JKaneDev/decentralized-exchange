@@ -199,7 +199,7 @@ export const depositToken = (dispatch, exchange, token, web3, amount, account) =
 		.send({ from: account })
 		.on('transactionHash', (hash) => {
 			exchange.methods
-				.depositToken()
+				.depositToken(token.options.address, amount)
 				.send({ from: account })
 				.on('transactionHash', (hash) => {
 					dispatch(balancesLoading());
