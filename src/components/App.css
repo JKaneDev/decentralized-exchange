@@ -133,8 +133,22 @@
 	padding: 2px;
 }
 
-.card-body th {
+.card-body th,
+.card-body td {
 	border-top: 0;
+	text-align: center;
+}
+
+.card-body.my-transactions td:nth-of-type(1),
+.card-body.my-transactions th:nth-of-type(1) {
+	text-align: left;
+	padding-left: 0.5rem;
+	letter-spacing: 0.1rem;
+}
+
+.card-body.trades td:nth-of-type(1),
+.card-body.trades th:nth-of-type(1) {
+	letter-spacing: 0.1rem;
 }
 
 .card-body .nav-tabs {
@@ -166,6 +180,11 @@
 	padding: 1rem 2.5rem 4rem 0;
 }
 
+.card-body.price-chart h4 {
+	letter-spacing: 0.1rem;
+	text-align: center;
+}
+
 .card-body.my-transactions,
 .card-body.trades,
 .card-body.order-book {
@@ -182,4 +201,47 @@ td.cancel-order {
 
 tr.order-book-order {
 	cursor: pointer;
+}
+
+.card-body.order-book td,
+.card-body.order-book th,
+.card-body.my-transactions td,
+.card-body.my-transactions th,
+.card-body.trades td,
+.card-body.trades td,
+.card-body.balance th,
+.card-body.balance th {
+	padding: 0.5rem;
+}
+
+.card-header {
+	display: flex;
+	justify-content: center;
+	letter-spacing: 0.1rem;
+	font-size: 1.25rem;
+}
+
+.card-body.balance {
+	display: flex;
+	flex-direction: column;
+}
+
+.form-wrapper {
+	justify-self: center;
+}
+
+#ether-withdraw {
+	padding: 0 0.75rem 0.5rem 0.5rem;
+}
+
+#ether-deposit {
+	padding: 0 0.75rem 0.5rem 0.5rem;
+}
+
+#token-withdraw {
+	padding: 0 0.75rem 0.5rem 0.5rem;
+}
+
+#token-deposit {
+	padding: 0 0.75rem 0.5rem 0.5rem;
 }

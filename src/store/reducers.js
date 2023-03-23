@@ -84,6 +84,12 @@ function exchange(state = {}, action) {
 
 		case 'ETHER_DEPOSIT_AMOUNT_CHANGED':
 			return { ...state, etherDepositAmount: action.amount };
+		case 'ETHER_WITHDRAW_AMOUNT_CHANGED':
+			return { ...state, etherWithdrawAmount: action.amount };
+		case 'TOKEN_DEPOSIT_AMOUNT_CHANGED':
+			return { ...state, tokenDepositAmount: action.amount };
+		case 'TOKEN_WITHDRAW_AMOUNT_CHANGED':
+			return { ...state, tokenWithdrawAmount: action.amount };
 
 		default:
 			return state;

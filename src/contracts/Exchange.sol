@@ -53,7 +53,8 @@ contract Exchange {
     function withdrawEther(uint _amount) public {
         require(balances[ETH][msg.sender] >= _amount);
         balances[ETH][msg.sender] -= _amount;
-        // msg.sender.transfer(_amount);
+        (bool success, ) = msg.sender.call{value: _amount}("");
+        require(success, "Transfer failed.");
         emit Withdraw(ETH, msg.sender, _amount, balances[ETH][msg.sender]);
     }
 

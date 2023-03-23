@@ -135,6 +135,7 @@ export const subscribeToEvents = async (exchange, dispatch) => {
 	});
 
 	exchange.events.Withdraw({}, (error, event) => {
+		console.log('Withdraw event received: ', event);
 		dispatch(balancesLoaded());
 	});
 };
@@ -168,6 +169,52 @@ export const depositEther = (dispatch, exchange, web3, amount, account) => {
 	exchange.methods
 		.depositEther()
 		.send({ from: account, value: web3.utils.toWei(amount, 'ether') })
+		.on('transactionHash', (hash) => {
+			dispatch(balancesLoading());
+		})
+		.on('error', (error) => {
+			console.error(error);
+			window.alert(`There was an error!`);
+		});
+};
+
+export const withdrawEther = (dispatch, exchange, web3, amount, account) => {
+	exchange.methods
+		.withdrawEther(web3.utils.toWei(amount, 'ether'))
+		.send({ from: account })
+		.on('transactionHash', (hash) => {
+			dispatch(balancesLoading());
+		})
+		.on('error', (error) => {
+			console.error(error);
+			window.alert(`There was an error!`);
+		});
+};
+
+export const depositToken = (dispatch, exchange, token, web3, amount, account) => {
+	amount = web3.utils.toWei(amount, 'ether');
+
+	token.methods
+		.approve(exchange.options.address, amount)
+		.send({ from: account })
+		.on('transactionHash', (hash) => {
+			exchange.methods
+				.depositToken()
+				.send({ from: account })
+				.on('transactionHash', (hash) => {
+					dispatch(balancesLoading());
+				})
+				.on('error', (error) => {
+					console.error(error);
+					window.alert(`There was an error!`);
+				});
+		});
+};
+
+export const withdrawToken = (dispatch, exchange, token, web3, amount, account) => {
+	exchange.methods
+		.withdrawToken(token.options.address, web3.utils.toWei(amount, 'ether'))
+		.send({ from: account })
 		.on('transactionHash', (hash) => {
 			dispatch(balancesLoading());
 		})
