@@ -11,9 +11,16 @@ import {
 	orderCancelled,
 	orderFilling,
 	orderFilled,
+	etherBalanceLoaded,
+	tokenBalanceLoaded,
+	exchangeEtherBalanceLoaded,
+	exchangeTokenBalanceLoaded,
+	balancesLoading,
+	balancesLoaded,
 } from './actions';
 import Token from '../abis/Token.json';
 import Exchange from '../abis/Exchange.json';
+import { ETH_ADDRESS } from './helpers';
 
 export const loadWeb3 = async (dispatch) => {
 	if (typeof window.ethereum !== 'undefined') {
@@ -122,4 +129,50 @@ export const subscribeToEvents = async (exchange, dispatch) => {
 	exchange.events.Trade({}, (error, event) => {
 		dispatch(orderFilled(event.returnValues));
 	});
+
+	exchange.events.Deposit({}, (error, event) => {
+		dispatch(balancesLoaded());
+	});
+
+	exchange.events.Withdraw({}, (error, event) => {
+		dispatch(balancesLoaded());
+	});
+};
+
+export const loadBalances = async (dispatch, web3, exchange, token, account) => {
+	if (typeof account !== 'undefined') {
+		// Ether balance in wallet
+		const etherBalance = await web3.eth.getBalance(account);
+		dispatch(etherBalanceLoaded(etherBalance));
+
+		// Token balance in wallet
+		const tokenBalance = await token.methods.balanceOf(account).call();
+		dispatch(tokenBalanceLoaded(tokenBalance));
+
+		// Ether balance on exchange
+		const exchangeEtherBalance = await exchange.methods.balanceOf(ETH_ADDRESS, account).call();
+		dispatch(exchangeEtherBalanceLoaded(exchangeEtherBalance));
+
+		// Token balance in wallet
+		const exchangeTokenBalance = await exchange.methods.balanceOf(token.options.address, account).call();
+		dispatch(exchangeTokenBalanceLoaded(exchangeTokenBalance));
+
+		// Trigger all balances loaded
+		dispatch(balancesLoaded());
+	} else {
+		window.alert('Please login with MetaMask');
+	}
+};
+
+export const depositEther = (dispatch, exchange, web3, amount, account) => {
+	exchange.methods
+		.depositEther()
+		.send({ from: account, value: web3.utils.toWei(amount, 'ether') })
+		.on('transactionHash', (hash) => {
+			dispatch(balancesLoading());
+		})
+		.on('error', (error) => {
+			console.error(error);
+			window.alert(`There was an error!`);
+		});
 };
