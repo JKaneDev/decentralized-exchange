@@ -171,7 +171,7 @@ const renderDashboard = (
 						className='row'
 						onSubmit={(event) => {
 							event.preventDefault();
-							withdrawToken(dispatch, exchange, token, web3, etherWithdrawAmount, account);
+							withdrawToken(dispatch, exchange, token, web3, tokenWithdrawAmount, account);
 						}}
 					>
 						<div className='col-12 col-sm pr-sm-2'>
