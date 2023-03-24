@@ -141,7 +141,7 @@
 
 .card-body.my-transactions td:nth-of-type(1),
 .card-body.my-transactions th:nth-of-type(1) {
-	text-align: left;
+	text-align: center;
 	padding-left: 0.5rem;
 	letter-spacing: 0.1rem;
 }
@@ -244,4 +244,19 @@ tr.order-book-order {
 
 #token-deposit {
 	padding: 0 0.75rem 0.5rem 0.5rem;
+}
+
+.form-group.small label,
+.input-group.orders {
+	padding: 0.25rem 0;
+}
+
+.card-body.new-orders {
+	padding: 0.25rem 0.5rem;
+}
+
+.card-body.new-orders form {
+	display: flex;
+	flex-direction: column;
+	gap: 0.5rem;
 }

@@ -17,6 +17,8 @@ import {
 	exchangeTokenBalanceLoaded,
 	balancesLoading,
 	balancesLoaded,
+	buyOrderMaking,
+	sellOrderMaking,
 } from './actions';
 import Token from '../abis/Token.json';
 import Exchange from '../abis/Exchange.json';
@@ -138,6 +140,11 @@ export const subscribeToEvents = async (exchange, dispatch) => {
 		console.log('Withdraw event received: ', event);
 		dispatch(balancesLoaded());
 	});
+
+	exchange.events.Order({}, (error, event) => {
+		console.log('Order made: ', event);
+		dispatch(balancesLoaded());
+	});
 };
 
 export const loadBalances = async (dispatch, web3, exchange, token, account) => {
@@ -217,6 +224,42 @@ export const withdrawToken = (dispatch, exchange, token, web3, amount, account) 
 		.send({ from: account })
 		.on('transactionHash', (hash) => {
 			dispatch(balancesLoading());
+		})
+		.on('error', (error) => {
+			console.error(error);
+			window.alert(`There was an error!`);
+		});
+};
+
+export const makeBuyOrder = (dispatch, exchange, token, web3, order, account) => {
+	const tokenReceived = token.options.address;
+	const amountReceived = web3.utils.toWei(order.amount, 'ether');
+	const tokenGiven = ETH_ADDRESS;
+	const amountGiven = web3.utils.toWei((order.amount * order.price).toString(), 'ether');
+
+	exchange.methods
+		.makeOrder(tokenReceived, amountReceived, tokenGiven, amountGiven)
+		.send({ from: account })
+		.on('transactionHash', (hash) => {
+			dispatch(buyOrderMaking());
+		})
+		.on('error', (error) => {
+			console.error(error);
+			window.alert(`There was an error!`);
+		});
+};
+
+export const makeSellOrder = (dispatch, exchange, token, web3, order, account) => {
+	const tokenReceived = ETH_ADDRESS;
+	const amountReceived = web3.utils.toWei((order.amount * order.price).toString(), 'ether');
+	const tokenGiven = token.options.address;
+	const amountGiven = web3.utils.toWei(order.amount, 'ether');
+
+	exchange.methods
+		.makeOrder(tokenReceived, amountReceived, tokenGiven, amountGiven)
+		.send({ from: account })
+		.on('transactionHash', (hash) => {
+			dispatch(sellOrderMaking());
 		})
 		.on('error', (error) => {
 			console.error(error);
