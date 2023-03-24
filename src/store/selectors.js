@@ -318,8 +318,8 @@ export const exchangeTokenBalanceSelector = createSelector(exchangeTokenBalance,
 	return formatBalance(balance);
 });
 
-const balancesLoading = (state) => get(state, 'exchange.balancesLoading', false);
-export const balancesLoadingSelector = createSelector(balancesLoading, (loading) => loading);
+const balancesLoading = (state) => get(state, 'exchange.balancesLoading', true);
+export const balancesLoadingSelector = createSelector(balancesLoading, (status) => status);
 
 const etherDepositAmount = (state) => get(state, 'exchange.etherDepositAmount', null);
 export const etherDepositAmountSelector = createSelector(etherDepositAmount, (amount) => amount);

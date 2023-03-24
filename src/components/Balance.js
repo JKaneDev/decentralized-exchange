@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import {
 	exchangeSelector,
@@ -213,7 +213,6 @@ const Balance = ({
 }) => {
 	useEffect(() => {
 		loadBlockchainData(dispatch, exchange, web3, token, account, showForm);
-		subscribeToEvents(exchange, dispatch);
 	}, []);
 
 	const loadBlockchainData = async (dispatch, exchange, web3, token, account) => {

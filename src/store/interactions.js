@@ -19,6 +19,7 @@ import {
 	balancesLoaded,
 	buyOrderMaking,
 	sellOrderMaking,
+	orderMade,
 } from './actions';
 import Token from '../abis/Token.json';
 import Exchange from '../abis/Exchange.json';
@@ -133,6 +134,7 @@ export const subscribeToEvents = async (exchange, dispatch) => {
 	});
 
 	exchange.events.Deposit({}, (error, event) => {
+		console.log('Deposit event received: ', event);
 		dispatch(balancesLoaded());
 	});
 
@@ -143,7 +145,7 @@ export const subscribeToEvents = async (exchange, dispatch) => {
 
 	exchange.events.Order({}, (error, event) => {
 		console.log('Order made: ', event);
-		dispatch(balancesLoaded());
+		dispatch(orderMade(event.returnValues));
 	});
 };
 
