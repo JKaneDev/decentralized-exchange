@@ -13,7 +13,7 @@
 		"@babel/core": "^7.21.3",
 		"@babel/preset-env": "^7.20.2",
 		"@reduxjs/toolkit": "^1.9.3",
-		"@truffle/hdwallet-provider": "^2.1.8",
+		"@truffle/hdwallet-provider": "^2.1.9",
 		"apexcharts": "3.37.1",
 		"babel-loader": "^9.1.2",
 		"babel-register": "6.26.0",
