@@ -45,7 +45,8 @@
 		"start": "react-scripts start",
 		"build": "react-scripts build",
 		"test": "react-scripts test",
-		"eject": "react-scripts eject"
+		"eject": "react-scripts eject",
+		"memory": "react-scripts --max_old_space_size=4096 start"
 	},
 	"eslintConfig": {
 		"extends": "react-app"

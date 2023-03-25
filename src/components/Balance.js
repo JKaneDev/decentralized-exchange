@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { connect } from 'react-redux';
 import {
 	exchangeSelector,
@@ -21,14 +21,7 @@ import {
 	tokenDepositAmountChanged,
 	tokenWithdrawAmountChanged,
 } from '../store/actions';
-import {
-	subscribeToEvents,
-	loadBalances,
-	depositEther,
-	withdrawEther,
-	depositToken,
-	withdrawToken,
-} from '../store/interactions';
+import { loadBalances, depositEther, withdrawEther, depositToken, withdrawToken } from '../store/interactions';
 import Spinner from './Spinner';
 import { Tabs, Tab } from 'react-bootstrap';
 
@@ -212,7 +205,7 @@ const Balance = ({
 	tokenWithdrawAmount,
 }) => {
 	useEffect(() => {
-		loadBlockchainData(dispatch, exchange, web3, token, account, showForm);
+		loadBlockchainData(dispatch, exchange, web3, token, account);
 	}, []);
 
 	const loadBlockchainData = async (dispatch, exchange, web3, token, account) => {

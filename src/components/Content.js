@@ -1,7 +1,7 @@
+import { useEffect } from 'react';
 import { connect, useDispatch } from 'react-redux';
 import { loadAllOrders, subscribeToEvents } from '../store/interactions';
 import { tokenSelector, exchangeSelector } from '../store/selectors';
-import { useEffect } from 'react';
 import Trades from './Trades';
 import OrderBook from './OrderBook';
 import MyTransactions from './MyTransactions';

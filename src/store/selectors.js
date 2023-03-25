@@ -1,5 +1,5 @@
 import moment from 'moment';
-import _, { maxBy, minBy, get, groupBy, reject } from 'lodash';
+import { maxBy, minBy, get, groupBy, reject } from 'lodash';
 import { createSelector } from 'reselect';
 import { ETH_ADDRESS, tokens, ether, GREEN, RED, formatBalance } from './helpers';
 

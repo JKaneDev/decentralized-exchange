@@ -1,13 +1,7 @@
 import './App.css';
-import Token from '../abis/Token.json';
 import { useEffect } from 'react';
 import { connect } from 'react-redux';
-import {
-	loadWeb3,
-	loadAccount,
-	loadToken,
-	loadExchange,
-} from '../store/interactions';
+import { loadWeb3, loadAccount, loadToken, loadExchange } from '../store/interactions';
 import NavBar from './NavBar';
 import Content from './Content';
 import { contractLoadedSelector } from '../store/selectors';
@@ -26,13 +20,13 @@ function App(props) {
 
 		if (!token) {
 			window.alert(
-				'Token smart contract not detected on the current network. Please select another network with Metamask'
+				'Token smart contract not detected on the current network. Please select another network with Metamask',
 			);
 		}
 
 		if (!exchange) {
 			window.alert(
-				'Exchange smart contract not detected on the current network. Please select another network with Metamask'
+				'Exchange smart contract not detected on the current network. Please select another network with Metamask',
 			);
 		}
 	};
