@@ -35,7 +35,7 @@ module.exports = async function () {
 		console.log('User 1 Balance: ', balance);
 
 		// User1 deposits ETH
-		amount = 0.1;
+		amount = 2;
 		await exchange.depositEther({ from: user1, value: ether(amount) });
 		console.log(`Deposited ${amount} ETH from ${user1}`);
 
@@ -98,9 +98,7 @@ module.exports = async function () {
 
 		// User 2 fills another order
 		orderId = result.logs[0].args.id;
-		console.log('Order ID: ', orderId.toString(), user2);
 		result = await exchange.fillOrder(orderId, { from: user2 });
-		console.log('Result:', result);
 		console.log(`Filled order from ${user1}`);
 
 		// Wait 1 second

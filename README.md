@@ -8,7 +8,7 @@ You can obtain Sepolia Testnet ETH from [here](https://faucet.sepolia.network/) 
 
 ### Site Preview
 
-![Screenshot of live site](https://dl.dropboxusercontent.com/s/plbhjc0er2393sd/exchange.png?dl=0)
+![Screenshot of live site](https://dl.dropboxusercontent.com/s/uiiy48mgbdgz1ib/exchange.png?dl=0)
 
 #### Features
 

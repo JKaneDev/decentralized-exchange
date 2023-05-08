@@ -102,11 +102,14 @@ contract Exchange {
     function _trade(uint256 _orderId, address _user, address _tokenReceived, uint256 _amountReceived, address _tokenGiven, uint256 _amountGiven) internal {
         uint256 _feeAmount = _amountReceived * feePercent / 100;
 
+        require(balances[_tokenReceived][msg.sender] >= _amountReceived + _feeAmount, "Insufficient tokenReceived balance");
+        require(balances[_tokenGiven][_user] >= _amountGiven, "Insufficient tokenGiven balance");
+
         balances[_tokenReceived][msg.sender] -= (_amountReceived + _feeAmount); // Order filler deducts token amount ordered by order maker + trade fee
         balances[_tokenReceived][_user] += _amountReceived; // Order maker receives token amount
         balances[_tokenReceived][feeAccount] += _feeAmount; // Exchange receives trade fee
         balances[_tokenGiven][_user] -= _amountGiven; // Order maker deducts token amount to give, specified when making order
-        balances[_tokenGiven][msg.sender] += _amountReceived; // Order filler receives token amount from order maker
+        balances[_tokenGiven][msg.sender] += _amountGiven; // Order filler receives token amount from order maker
 
         // Emit Trade Event
         emit Trade(_orderId, _user, _tokenReceived, _amountReceived, _tokenGiven, _amountGiven, msg.sender, block.timestamp);
