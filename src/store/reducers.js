@@ -81,7 +81,6 @@ function exchange(state = {}, action) {
 			return { ...state, balancesLoading: true };
 		case 'BALANCES_LOADED':
 			return { ...state, balancesLoading: false };
-
 		case 'ETHER_DEPOSIT_AMOUNT_CHANGED':
 			return { ...state, etherDepositAmount: action.amount };
 		case 'ETHER_WITHDRAW_AMOUNT_CHANGED':
@@ -90,11 +89,9 @@ function exchange(state = {}, action) {
 			return { ...state, tokenDepositAmount: action.amount };
 		case 'TOKEN_WITHDRAW_AMOUNT_CHANGED':
 			return { ...state, tokenWithdrawAmount: action.amount };
-
 		case 'BUY_ORDER_AMOUNT_CHANGED':
 			return { ...state, buyOrder: { ...state.buyOrder, amount: action.amount } };
 		case 'BUY_ORDER_PRICE_CHANGED':
-			console.log('BUY PRICE: ', state.buyOrder);
 			return { ...state, buyOrder: { ...state.buyOrder, price: action.price } };
 		case 'BUY_ORDER_MAKING':
 			return { ...state, buyOrder: { ...state.buyOrder, amount: null, price: null, making: true } };

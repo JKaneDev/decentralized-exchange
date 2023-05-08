@@ -24,6 +24,7 @@ import {
 import Token from '../abis/Token.json';
 import Exchange from '../abis/Exchange.json';
 import { ETH_ADDRESS } from './helpers';
+const API_KEY = process.env.INFURA_API_KEY || '';
 
 export const loadWeb3 = async (dispatch) => {
 	if (typeof window.ethereum !== 'undefined') {
@@ -32,8 +33,17 @@ export const loadWeb3 = async (dispatch) => {
 		dispatch(web3Loaded(web3));
 		return web3;
 	} else {
-		window.alert('Please install MetaMask');
-		window.location.assign('https://metamask.io/');
+		const sepoliaRpcUrl = `https://sepolia.infura.io/v3/${API_KEY}`;
+		try {
+			const web3 = new Web3(sepoliaRpcUrl);
+			console.log('Connected to Sepolia testnet');
+			dispatch(web3Loaded(web3));
+			return web3;
+		} catch (error) {
+			console.log('Failed to connect to Sepolia testnet: ', error);
+			window.alert('Please install MetaMask');
+			window.location.assign('https://metamask.io/');
+		}
 	}
 };
 
@@ -144,7 +154,6 @@ export const subscribeToEvents = async (exchange, dispatch) => {
 	});
 
 	exchange.events.Order({}, (error, event) => {
-		console.log('Order made: ', event);
 		dispatch(orderMade(event.returnValues));
 	});
 };

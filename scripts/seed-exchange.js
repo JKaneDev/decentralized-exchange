@@ -98,7 +98,9 @@ module.exports = async function () {
 
 		// User 2 fills another order
 		orderId = result.logs[0].args.id;
-		await exchange.fillOrder(orderId, { from: user2 });
+		console.log('Order ID: ', orderId.toString(), user2);
+		result = await exchange.fillOrder(orderId, { from: user2 });
+		console.log('Result:', result);
 		console.log(`Filled order from ${user1}`);
 
 		// Wait 1 second

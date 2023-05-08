@@ -32,8 +32,6 @@ contract Exchange {
         uint256 timestamp;
     }
 
-    // Store the order
-    // Add the order to storage
 
     constructor (address _feeAccount, uint256 _feePercent) {
         feeAccount = _feeAccount;
@@ -92,9 +90,9 @@ contract Exchange {
     }
 
     function fillOrder (uint256 _id) public {
-        require(_id > 0 && _id <= orderCount);
-        require(!orderFilled[_id]);
-        require(!orderCancelled[_id]);
+        require(_id > 0 && _id <= orderCount, "Order count invalid");
+        require(!orderFilled[_id], "Order has been filled");
+        require(!orderCancelled[_id], "Order has been cancelled");
         _Order storage _order = orders[_id];
        _trade(_order.id, _order.user, _order.tokenReceived, _order.amountReceived, _order.tokenGiven, _order.amountGiven);
         orderFilled[_order.id] = true;

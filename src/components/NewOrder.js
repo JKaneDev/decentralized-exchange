@@ -127,16 +127,6 @@ const NewOrder = ({
 function mapStateToProps(state) {
 	const buyOrder = buyOrderSelector(state);
 	const sellOrder = sellOrderSelector(state);
-
-	console.log({
-		exchange: exchangeSelector(state),
-		token: tokenSelector(state),
-		account: accountSelector(state),
-		web3: web3Selector(state),
-		buyOrder,
-		sellOrder,
-		// showForm: !buyOrder.making && !sellOrder.making,
-	});
 	return {
 		exchange: exchangeSelector(state),
 		token: tokenSelector(state),

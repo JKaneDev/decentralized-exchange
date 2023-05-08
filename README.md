@@ -1,70 +1,36 @@
-# Getting Started with Create React App
+## X Token Exchange
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+- X Token Exchange is a decentralized cryptocurrency exchange that allows users to trade XTK tokens with ETH in a secure and transparent manner. The exchange offers a variety of features such as depositing and withdrawing ETH and XTK tokens, placing buy and sell orders, viewing recent trades, and more.
 
-## Available Scripts
+[Live Site](https://x-token-exchange.herokuapp.com/)
 
-In the project directory, you can run:
+You can obtain Sepolia Testnet ETH from [here](https://faucet.sepolia.network/) or [here](https://faucet.dimakogan.com/sep/), or by sending me a quick DM on Twitter at [https://twitter.com/\_jtkane](_jtkane)
 
-### `npm start`
+### Site Preview
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+![Screenshot of live site](https://www.dropbox.com/s/plbhjc0er2393sd/exchange.png?dl=0)
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+#### Features
 
-### `npm test`
+- **Withdraw and deposit ETH**: Securely deposit and withdraw ETH from your account.
+- **Withdraw and deposit XTK tokens**: Securely deposit and withdraw XTK tokens from your account.
+- **See balances**: View your current account balances for both ETH and XTK tokens.
+- **Place Buy & Sell Orders for XTK token**: Easily place buy and sell orders for XTK tokens.
+- **See recent timestamped trades occurring on the exchange**: View the most recent trades, complete with timestamps.
+- **See open orders not yet filled**: Monitor open orders that have not yet been filled.
+- **Fill Orders**: Quickly fill orders that match your desired price.
+- **See price chart for XTK token**: Analyze the price chart for XTK tokens to make informed trading decisions.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Running the App Locally
 
-### `npm run build`
+1. Clone the repository:
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+```bash
+git clone https://github.com/your-repo/x-token-exchange.git
+cd x-token-exchange
+npm install
+truffle compile
+truffle migrate
+truffle exec scripts/seed-exchange.js
+npm run dev
+```
