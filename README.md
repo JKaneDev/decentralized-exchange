@@ -23,8 +23,6 @@ You can obtain Sepolia Testnet ETH from [here](https://faucet.sepolia.network/) 
 
 ## Running the App Locally
 
-1. Clone the repository:
-
 ```bash
 git clone https://github.com/your-repo/x-token-exchange.git
 cd x-token-exchange
