@@ -1,3 +1,5 @@
+require('dotenv').config();
+const Web3 = require('web3');
 const helpers = require('../src/helpers');
 const ETH_ADDRESS = helpers.ETH_ADDRESS;
 const tokens = helpers.tokens;
@@ -7,10 +9,19 @@ const wait = helpers.wait;
 const Token = artifacts.require('Token');
 const Exchange = artifacts.require('Exchange');
 
+const API_KEY = process.env.INFURA_API_KEY || '';
+const web3 = new Web3(`https://sepolia.infura.io/v3/${API_KEY}`);
+const user1PrivateKey = process.env.USER1_PRIVATE_KEY || '';
+const user2PrivateKey = process.env.USER2_PRIVATE_KEY || '';
+
 module.exports = async function () {
 	try {
 		// Fetch accounts
-		const accounts = await web3.eth.getAccounts();
+		const account1 = web3.eth.accounts.privateKeyToAccount(user1PrivateKey);
+		const account2 = web3.eth.accounts.privateKeyToAccount(user2PrivateKey);
+		web3.eth.accounts.wallet.add(account1);
+		web3.eth.accounts.wallet.add(account2);
+		web3.eth.defaultAccount = account1.address;
 
 		// Fetch deployed token
 		const token = await Token.deployed();
@@ -20,18 +31,18 @@ module.exports = async function () {
 		const exchange = await Exchange.deployed();
 		console.log('Exchange Fetched', exchange.address);
 
-		const sender = accounts[0];
-		const receiver = accounts[1];
+		const sender = account1.address;
+		const receiver = account2.address;
 		let amount = web3.utils.toWei('10000', 'ether');
 
 		// Give tokens to account[1]
 		await token.transfer(receiver, amount, { from: sender });
 		console.log(`Transferred ${amount} tokens from ${sender} to ${receiver}`);
 
-		const user1 = accounts[0];
-		const user2 = accounts[1];
+		const user1 = account1.address;
+		const user2 = account2.address;
 
-		const balance = await web3.eth.getBalance(accounts[0]);
+		const balance = await web3.eth.getBalance(user1);
 		console.log('User 1 Balance: ', balance);
 
 		// User1 deposits ETH
