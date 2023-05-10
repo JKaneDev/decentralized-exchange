@@ -91,7 +91,7 @@ const renderForm = (dispatch, exchange, token, web3, buyOrder, sellOrder, accoun
 					<button type='submit' className='btn btn-primary btn-sm btn-block' id='order-btn'>
 						Sell Order
 					</button>
-					{showSellTotal ? <small>Total: {sellOrder.amount * sellOrder.price} XTK</small> : null}
+					{showSellTotal ? <small>Total: {sellOrder.amount * sellOrder.price} ETH</small> : null}
 				</form>
 			</Tab>
 		</Tabs>
